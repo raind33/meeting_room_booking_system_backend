@@ -9,6 +9,9 @@ import {
   Query,
   Inject,
   UnauthorizedException,
+  ParseIntPipe,
+  BadRequestException,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -198,6 +201,46 @@ export class UserController {
       html: `<p>你的验证码是 ${code}</p>`,
     });
     return '发送成功';
+  }
+
+  @Get('freeze')
+  async freeze(@Query('userId') userId: number) {
+    return await this.userService.freeze(userId);
+  }
+
+  @Get('list')
+  async list(
+    @Query(
+      'pageNo',
+      new DefaultValuePipe(1),
+      new ParseIntPipe({
+        exceptionFactory() {
+          throw new BadRequestException('pageNo 应该传数字');
+        },
+      }),
+    )
+    pageNo: number,
+    @Query(
+      'pageSize',
+      new DefaultValuePipe(2),
+      new ParseIntPipe({
+        exceptionFactory() {
+          throw new BadRequestException('pageSize 应该传数字');
+        },
+      }),
+    )
+    pageSize: number,
+    @Query('username') username: string,
+    @Query('nickName') nickName: string,
+    @Query('email') email: string,
+  ) {
+    return await this.userService.findUsers(
+      username,
+      nickName,
+      email,
+      pageNo,
+      pageSize,
+    );
   }
 
   @Get('init')
