@@ -13,6 +13,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { LoginGuard } from './login.guard';
 import { PermissionGuard } from './permission.guard';
+import { ScheduleModule } from '@nestjs/schedule';
+import { TaskService } from './task.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -53,13 +55,14 @@ import { PermissionGuard } from './permission.guard';
       },
       inject: [ConfigService],
     }),
-
+    ScheduleModule.forRoot(),
     UserModule,
     RedisModule,
     EmailModule,
   ],
   controllers: [AppController],
   providers: [
+    TaskService,
     AppService,
     {
       provide: APP_GUARD,
