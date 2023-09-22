@@ -13,6 +13,7 @@ import { Permission } from './user/entities/permission.entity';
 
 interface JwtUserData {
   userId: number;
+  email: string;
   username: string;
   roles: string[];
   permissions: Permission[];
@@ -57,6 +58,7 @@ export class LoginGuard implements CanActivate {
       const data = this.jwtService.verify<JwtUserData>(token);
 
       request.user = {
+        email: data.email,
         userId: data.userId,
         username: data.username,
         roles: data.roles,
