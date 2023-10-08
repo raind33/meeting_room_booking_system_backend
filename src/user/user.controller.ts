@@ -297,7 +297,7 @@ export class UserController {
   }
 
   @Get('freeze')
-  async freeze(@Query('userId') userId: number) {
+  async freeze(@Query('id') userId: number) {
     return await this.userService.freeze(userId);
   }
 

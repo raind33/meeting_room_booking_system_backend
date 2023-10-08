@@ -15,6 +15,8 @@ import { LoginGuard } from './login.guard';
 import { PermissionGuard } from './permission.guard';
 import { ScheduleModule } from '@nestjs/schedule';
 import { TaskService } from './task.service';
+import { MeetingRoomModule } from './meeting-room/meeting-room.module';
+import { MeetingRoom } from './meeting-room/entities/meeting-room.entity';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -33,7 +35,7 @@ import { TaskService } from './task.service';
           database: configService.get('mysql_server_database'),
           synchronize: true, // 设置为 true，在应用程序启动时会自动创建数据库表结构
           logging: true, // 设置为 true，TypeORM 会在控制台输出数据库查询日志，便于调试
-          entities: [User, Permission, Role],
+          entities: [User, Permission, Role, MeetingRoom],
           poolSize: 10,
           connectorPackage: 'mysql2',
           extra: {
@@ -59,6 +61,7 @@ import { TaskService } from './task.service';
     UserModule,
     RedisModule,
     EmailModule,
+    MeetingRoomModule,
   ],
   controllers: [AppController],
   providers: [
