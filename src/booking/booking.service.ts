@@ -76,6 +76,7 @@ export class BookingService {
     bookingTimeRangeStart: number,
     bookingTimeRangeEnd: number,
   ) {
+    console.log(typeof bookingTimeRangeStart, 888, bookingTimeRangeStart);
     const skipCount = (pageNo - 1) * pageSize;
 
     const condition: Record<string, any> = {};
@@ -104,9 +105,10 @@ export class BookingService {
         bookingTimeRangeEnd = bookingTimeRangeStart + 60 * 60 * 1000;
       }
       condition.startTime = Between(
-        new Date(Number(bookingTimeRangeStart)),
-        new Date(Number(bookingTimeRangeEnd)),
+        new Date(bookingTimeRangeStart),
+        new Date(bookingTimeRangeEnd),
       );
+      console.log(typeof bookingTimeRangeStart, 9999);
     }
 
     const [bookings, totalCount] = await this.entityManager.findAndCount(

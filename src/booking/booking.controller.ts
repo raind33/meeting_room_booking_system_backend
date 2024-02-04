@@ -38,6 +38,7 @@ export class BookingController {
     @Query('bookingTimeRangeStart') bookingTimeRangeStart: number,
     @Query('bookingTimeRangeEnd') bookingTimeRangeEnd: number,
   ) {
+    console.log(typeof bookingTimeRangeStart, 666);
     return this.bookingService.find(
       pageNo,
       pageSize,
@@ -66,5 +67,10 @@ export class BookingController {
   @Get('urge/:id')
   async urge(@Param('id') id: number) {
     return this.bookingService.urge(id);
+  }
+  @Post('add')
+  async add(@Body() params: UpdateBookingDto) {
+    console.log(params);
+    return 'success';
   }
 }
