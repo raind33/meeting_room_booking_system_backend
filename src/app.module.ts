@@ -21,11 +21,13 @@ import { BookingModule } from './booking/booking.module';
 import { Booking } from './booking/entities/booking.entity';
 import { StatisticModule } from './statistic/statistic.module';
 import { EtcdModule } from './etcd/etcd.module';
+import * as path from 'path';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: 'src/.env',
+      envFilePath: path.join(__dirname, '.env'),
+      // envFilePath: 'src/.env',
     }),
 
     TypeOrmModule.forRootAsync({
