@@ -20,7 +20,7 @@ import { MeetingRoom } from './meeting-room/entities/meeting-room.entity';
 import { BookingModule } from './booking/booking.module';
 import { Booking } from './booking/entities/booking.entity';
 import { StatisticModule } from './statistic/statistic.module';
-import { EtcdModule } from './etcd/etcd.module';
+// import { EtcdModule } from './etcd/etcd.module';
 import * as path from 'path';
 @Module({
   imports: [
@@ -70,19 +70,19 @@ import * as path from 'path';
     MeetingRoomModule,
     BookingModule,
     StatisticModule,
-    EtcdModule.forRootAsync({
-      async useFactory(configService: ConfigService) {
-        await 2323;
-        return {
-          hosts: configService.get('etcd_hosts'),
-          auth: {
-            username: configService.get('etcd_auth_username'),
-            password: configService.get('etcd_auth_password'),
-          },
-        };
-      },
-      inject: [ConfigService],
-    }),
+    // EtcdModule.forRootAsync({
+    //   async useFactory(configService: ConfigService) {
+    //     await 2323;
+    //     return {
+    //       hosts: configService.get('etcd_hosts'),
+    //       auth: {
+    //         username: configService.get('etcd_auth_username'),
+    //         password: configService.get('etcd_auth_password'),
+    //       },
+    //     };
+    //   },
+    //   inject: [ConfigService],
+    // }),
   ],
   controllers: [AppController],
   providers: [
