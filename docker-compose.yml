@@ -15,8 +15,8 @@ services:
     depends_on:
       - mysql-container
       - redis-container
-    ports:
-      - 3005:3005
+    # ports:
+    #   - 3005:3005
     networks:
       - common-network
   mysql-container:
