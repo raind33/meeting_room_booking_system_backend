@@ -18,7 +18,9 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { MeetingRoom } from './entities/meeting-room.entity';
 import { Repository } from 'typeorm';
 import { generateParseIntPipe } from 'src/utils';
+import { RequireLogin } from 'src/custom.decorator';
 
+@RequireLogin()
 @Controller('meeting-room')
 export class MeetingRoomController {
   constructor(private readonly meetingRoomService: MeetingRoomService) {}
