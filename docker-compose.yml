@@ -21,6 +21,8 @@ services:
       - common-network
   mysql-container:
     image: mysql
+    ports:
+    - "3308:3306"
     volumes:
       - /Users/wuyuliang/mysql-data:/var/lib/mysql
     environment:
