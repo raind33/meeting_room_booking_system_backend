@@ -7,6 +7,7 @@ import { FormatResponseInterceptor } from './format-response.interceptor';
 import { InvokeRecordInterceptor } from './invoke-record.interceptor';
 import { CustomExceptionFilter } from './custom-exception.filter';
 import { NestExpressApplication } from '@nestjs/platform-express';
+import * as cookieParse from 'cookie-parser';
 
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
@@ -30,6 +31,7 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, documentConfig);
   SwaggerModule.setup('api-docs', app, document);
   const configService = app.get(ConfigService);
+  app.use(cookieParse());
   await app.listen(configService.get('nest_server_port'));
 }
 bootstrap();

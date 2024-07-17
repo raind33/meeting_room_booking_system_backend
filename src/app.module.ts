@@ -22,6 +22,7 @@ import { Booking } from './booking/entities/booking.entity';
 import { StatisticModule } from './statistic/statistic.module';
 // import { EtcdModule } from './etcd/etcd.module';
 import { MinioModule } from './minio/minio.module';
+import { AuthModule } from './auth/auth.module';
 import * as path from 'path';
 @Module({
   imports: [
@@ -71,7 +72,8 @@ import * as path from 'path';
     MeetingRoomModule,
     BookingModule,
     StatisticModule,
-    MinioModule,
+    // MinioModule,
+    AuthModule,
     // EtcdModule.forRootAsync({
     //   async useFactory(configService: ConfigService) {
     //     await 2323;
