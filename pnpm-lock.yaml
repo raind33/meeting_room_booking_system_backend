@@ -50,6 +50,9 @@ dependencies:
   cookie-parser:
     specifier: ^1.4.6
     version: 1.4.6
+  cross-env:
+    specifier: ^7.0.3
+    version: 7.0.3
   etcd3:
     specifier: ^1.1.2
     version: 1.1.2
@@ -2586,6 +2589,14 @@ packages:
     dependencies:
       '@types/luxon': 3.3.8
       luxon: 3.3.0
+    dev: false
+
+  /cross-env@7.0.3:
+    resolution: {integrity: sha512-+/HKd6EgcQCJGh2PSjZuUitQBQynKor4wrFbRg4DtAgS1aWO+gU52xpH7M9ScGgXSYmAVS9bIJ8EzuaGw0oNAw==}
+    engines: {node: '>=10.14', npm: '>=6', yarn: '>=1'}
+    hasBin: true
+    dependencies:
+      cross-spawn: 7.0.3
     dev: false
 
   /cross-spawn@7.0.3:

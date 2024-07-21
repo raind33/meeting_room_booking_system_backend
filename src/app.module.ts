@@ -24,11 +24,17 @@ import { StatisticModule } from './statistic/statistic.module';
 import { MinioModule } from './minio/minio.module';
 import { AuthModule } from './auth/auth.module';
 import * as path from 'path';
+
+const envPath = [
+  path.join(__dirname, `.env.${process.env.APP_ENV}`),
+  path.join(__dirname, '.env'),
+];
+console.log(envPath);
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: path.join(__dirname, '.env'),
+      envFilePath: envPath,
       // envFilePath: 'src/.env',
     }),
 
@@ -41,7 +47,7 @@ import * as path from 'path';
           username: configService.get('mysql_server_username'),
           password: configService.get('mysql_server_password'),
           database: configService.get('mysql_server_database'),
-          synchronize: true, // 设置为 true，在应用程序启动时会自动创建数据库表结构
+          synchronize: process.env.APP_ENV === 'development' ? true : false, // 设置为 true，在应用程序启动时会自动创建数据库表结构
           logging: true, // 设置为 true，TypeORM 会在控制台输出数据库查询日志，便于调试
           entities: [User, Permission, Role, MeetingRoom, Booking],
           poolSize: 10,
@@ -72,7 +78,7 @@ import * as path from 'path';
     MeetingRoomModule,
     BookingModule,
     StatisticModule,
-    // MinioModule,
+    MinioModule,
     AuthModule,
     // EtcdModule.forRootAsync({
     //   async useFactory(configService: ConfigService) {

@@ -15,8 +15,8 @@ services:
     depends_on:
       - mysql-container
       - redis-container
-    # ports:
-    #   - 3005:3005
+    ports:
+      - 3005:3005
     networks:
       - common-network
   mysql-container:
@@ -24,20 +24,36 @@ services:
     ports:
     - "3308:3306"
     volumes:
-      - /Users/wuyuliang/mysql-data:/var/lib/mysql
-    env_file:
-      - ./src/.env
+      - ${mysql_volume_path}:/var/lib/mysql
+    # env_file:
+    #   - ./src/.env
     environment:
       MYSQL_DATABASE: ${mysql_server_database}
-      MYSQL_ROOT_PASSWORD: ${mysql_server_database}
+      MYSQL_ROOT_PASSWORD: ${mysql_server_password}
+    restart: always
     networks:
       - common-network
   redis-container:
     image: redis
     volumes:
-      - /Users/wuyuliang/redis-data:/data
+      - ${redis_volume_path}:/data
+    restart: always
     networks:
       - common-network
+  minio-container:
+    image: bitnami/minio:latest
+    ports:
+      - 9000:9000
+      - 9001:9001
+    volumes:
+      - ${minio_volume_path}:/bitnami/minio/data
+    environment:
+      MINIO_ROOT_USER: ${minio_root_user}
+      MINIO_ROOT_PASSWORD: ${minio_root_password}
+    restart: always
+    networks:
+      - common-network
+
 networks:
   common-network:
     driver: bridge
