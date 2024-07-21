@@ -53,6 +53,7 @@ services:
     restart: always
     networks:
       - common-network
+    user: "0:0"  # 以 root 用户和组运行
 
 networks:
   common-network:
