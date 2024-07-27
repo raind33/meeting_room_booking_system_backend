@@ -15,7 +15,7 @@ import { MinioController } from './minio.controller';
           configService.get('minio_secret_key'),
         );
         return new minio.Client({
-          endPoint: configService.get('minio_endpoint'),
+          endPoint: 'http://rain-d.xyz',
           port: +configService.get('minio_port'),
           useSSL: false,
           accessKey: configService.get('minio_access_key'),
