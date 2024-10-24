@@ -24,7 +24,15 @@ import { StatisticModule } from './statistic/statistic.module';
 import { MinioModule } from './minio/minio.module';
 import { AuthModule } from './auth/auth.module';
 import * as path from 'path';
-
+import {
+  WINSTON_MODULE_NEST_PROVIDER,
+  WinstonLogger,
+  WinstonModule,
+  utilities,
+} from 'nest-winston';
+import * as winston from 'winston';
+import { CustomTypeOrmLogger } from './CustomTypeOrmLogger';
+import 'winston-daily-rotate-file';
 const envPath = [
   path.join(__dirname, `.env.${process.env.APP_ENV}`),
   path.join(__dirname, '.env'),
@@ -39,7 +47,7 @@ console.log(envPath);
     }),
 
     TypeOrmModule.forRootAsync({
-      useFactory(configService: ConfigService) {
+      useFactory(configService: ConfigService, logger: WinstonLogger) {
         return {
           type: 'mysql',
           host: configService.get('mysql_server_host'),
@@ -47,8 +55,9 @@ console.log(envPath);
           username: configService.get('mysql_server_username'),
           password: configService.get('mysql_server_password'),
           database: configService.get('mysql_server_database'),
+          logging: true,
           synchronize: process.env.APP_ENV === 'development' ? true : false, // 设置为 true，在应用程序启动时会自动创建数据库表结构
-          logging: true, // 设置为 true，TypeORM 会在控制台输出数据库查询日志，便于调试
+          logger: new CustomTypeOrmLogger(logger), // 设置为 true，TypeORM 会在控制台输出数据库查询日志，便于调试
           entities: [User, Permission, Role, MeetingRoom, Booking],
           poolSize: 10,
           connectorPackage: 'mysql2',
@@ -57,7 +66,7 @@ console.log(envPath);
           },
         };
       },
-      inject: [ConfigService],
+      inject: [ConfigService, WINSTON_MODULE_NEST_PROVIDER],
     }),
     JwtModule.registerAsync({
       global: true,
@@ -70,6 +79,29 @@ console.log(envPath);
         };
       },
       inject: [ConfigService],
+    }),
+    WinstonModule.forRootAsync({
+      useFactory: () => ({
+        level: 'debug',
+        transports: [
+          // new winston.transports.File({
+          //   filename: `${process.cwd()}/log`,
+          // }),
+          new winston.transports.DailyRotateFile({
+            level: 'debug',
+            dirname: 'daily-log',
+            filename: 'log-%DATE%.log',
+            datePattern: 'YYYY-MM-DD',
+            maxSize: '10k',
+          }),
+          new winston.transports.Console({
+            format: winston.format.combine(
+              winston.format.timestamp(),
+              utilities.format.nestLike(),
+            ),
+          }),
+        ],
+      }),
     }),
     ScheduleModule.forRoot(),
     UserModule,
