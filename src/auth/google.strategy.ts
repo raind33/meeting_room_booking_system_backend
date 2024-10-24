@@ -4,7 +4,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-google-oauth20';
 import { SocksProxyAgent } from 'socks-proxy-agent';
 
-// const Agent = new SocksProxyAgent('socks5://127.0.0.1:7890');
+// const Agent = new SocksProxyAgent('socks5://127.0.0.1:7897');
 @Injectable()
 export class GoogleStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(private readonly configService: ConfigService) {
